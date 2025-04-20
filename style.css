@@ -1,0 +1,50 @@
+body {
+    background-color: black;
+    color: white;
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 20px;
+}
+
+header {
+    text-align: center;
+    margin-bottom: 30px;
+}
+
+.stats {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 30px;
+}
+
+.stat {
+    margin: 0 15px;
+}
+
+.badge {
+    background-color: rgb(128, 0, 128); /* Ungu */
+    padding: 10px 15px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(128, 0, 128, 0.75);
+}
+
+h2 {
+    text-align: center;
+    margin-top: 20px;
+}
+
+.technologies {
+    border-top: 2px solid white;
+    padding-top: 20px;
+}
+
+.icons {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+}
+
+.icon {
+    width: 50px; /* Sesuaikan ukuran ikon */
+    margin: 10px;
+}
