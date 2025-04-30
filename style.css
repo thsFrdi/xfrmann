@@ -1,50 +1,28 @@
 body {
-    background-color: black;
-    color: white;
-    font-family: Arial, sans-serif;
-    margin: 0;
-    padding: 20px;
+	padding: 2rem;
+	font-family: -apple-system, BlinkMacSystemFont, "Arial", sans-serif;
 }
 
-header {
-    text-align: center;
-    margin-bottom: 30px;
+h1 {
+	font-size: 16px;
+	margin-top: 0;
 }
 
-.stats {
-    display: flex;
-    justify-content: center;
-    margin-bottom: 30px;
+p {
+	color: rgb(107, 114, 128);
+	font-size: 15px;
+	margin-bottom: 10px;
+	margin-top: 5px;
 }
 
-.stat {
-    margin: 0 15px;
+.card {
+	max-width: 620px;
+	margin: 0 auto;
+	padding: 16px;
+	border: 1px solid lightgray;
+	border-radius: 16px;
 }
 
-.badge {
-    background-color: rgb(128, 0, 128); /* Ungu */
-    padding: 10px 15px;
-    border-radius: 5px;
-    box-shadow: 0 0 10px rgba(128, 0, 128, 0.75);
-}
-
-h2 {
-    text-align: center;
-    margin-top: 20px;
-}
-
-.technologies {
-    border-top: 2px solid white;
-    padding-top: 20px;
-}
-
-.icons {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-}
-
-.icon {
-    width: 50px; /* Sesuaikan ukuran ikon */
-    margin: 10px;
+.card p:last-child {
+	margin-bottom: 0;
 }
