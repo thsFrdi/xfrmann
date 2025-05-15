@@ -9,7 +9,7 @@
 <body>
     <header>
         <h1>Profil xFrmann</h1>
-        <p>Pengembang hobi di bidang Bot WhatsApp Node.js</p>
+        <p>Just hobby in Bot WhatsApp Node.js</p>
         <p>Usia: 19 tahun (lahir 15 Mei 2005)</p>
         <p><a href="https://xfrmannjs.vercel.app" target="_blank">Website Saya</a></p>
     </header>
