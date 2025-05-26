@@ -3,962 +3,415 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>XFRMAN | AstroTech WhatsApp Bot</title>
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <title>xSpaceUploader - Share Your Cosmic Files</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script src="https://cdn.jsdelivr.net/npm/particles.js@2.0.0/particles.min.js"></script>
     <style>
-        :root {
-            --primary: #38bdf8;
-            --primary-light: #bae6fd;
-            --primary-dark: #0284c7;
-        }
-        
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #ffffff;
-            color: #0f172a;
-            overflow-x: hidden;
-            scroll-behavior: smooth;
-        }
-        
         #particles-js {
-            position: fixed;
+            position: absolute;
             width: 100%;
             height: 100%;
-            top: 0;
-            left: 0;
-            z-index: 0;
-            opacity: 0.3;
+            background-color: #0f172a;
+            background-image: url("");
+            background-repeat: no-repeat;
+            background-size: cover;
+            background-position: 50% 50%;
+            z-index: -1;
         }
         
-        .content-wrapper {
-            position: relative;
-            z-index: 1;
-        }
-        
-        .hero {
-            background: linear-gradient(135deg, rgba(186, 230, 253, 0.3) 0%, rgba(255, 255, 255, 1) 100%);
-        }
-        
-        .section {
-            scroll-margin-top: 100px;
-        }
-        
-        .card {
-            transition: all 0.3s ease;
-            border: 1px solid #e0f2fe;
-            background: rgba(255, 255, 255, 0.8);
+        .upload-container {
             backdrop-filter: blur(10px);
+            background-color: rgba(15, 23, 42, 0.7);
+            border: 1px solid rgba(255, 255, 255, 0.1);
         }
         
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.3);
+        .glow {
+            box-shadow: 0 0 15px rgba(56, 182, 255, 0.6);
         }
         
-        .glow-effect {
-            position: relative;
-            overflow: hidden;
+        .file-input-label:hover {
+            transform: translateY(-2px);
         }
         
-        .glow-effect:after {
-            content: '';
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: radial-gradient(circle at center, rgba(56, 189, 248, 0.3) 0%, transparent 70%);
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-        
-        .glow-effect:hover:after {
-            opacity: 1;
-        }
-        
-        .glow-effect:active:after {
-            background: radial-gradient(circle at center, rgba(56, 189, 248, 0.5) 0%, transparent 70%);
-        }
-        
-        .nav-link {
-            position: relative;
-        }
-        
-        .nav-link:after {
-            content: '';
-            position: absolute;
-            bottom: -5px;
-            left: 0;
-            width: 0;
-            height: 2px;
-            background-color: var(--primary);
-            transition: width 0.3s ease;
-        }
-        
-        .nav-link:hover:after {
-            width: 100%;
-        }
-        
-        .animate-on-scroll {
-            opacity: 0;
-            transform: translateY(30px);
-            transition: opacity 0.6s ease, transform 0.6s ease;
-        }
-        
-        .animate-on-scroll.visible {
-            opacity: 1;
+        .file-input-label:active {
             transform: translateY(0);
         }
         
-        .timeline-item {
-            position: relative;
-            padding-left: 2rem;
-            margin-bottom: 2rem;
+        @keyframes pulse {
+            0% { opacity: 0.6; }
+            50% { opacity: 1; }
+            100% { opacity: 0.6; }
         }
         
-        .timeline-item:before {
-            content: '';
-            position: absolute;
-            left: 0;
-            top: 0;
-            width: 16px;
-            height: 16px;
-            border-radius: 50%;
-            background-color: var(--primary);
-        }
-        
-        .timeline-item:after {
-            content: '';
-            position: absolute;
-            left: 7px;
-            top: 16px;
-            width: 2px;
-            height: calc(100% - 16px);
-            background-color: var(--primary);
-        }
-        
-        .timeline-item:last-child:after {
-            display: none;
-        }
-        
-        .feature-item {
-            position: relative;
-            padding-left: 2rem;
-        }
-        
-        .feature-item:before {
-            content: '✓';
-            position: absolute;
-            left: 0;
-            color: var(--primary);
-            font-weight: bold;
-        }
-        
-        .price-card {
-            transition: all 0.3s ease;
-        }
-        
-        .price-card:hover {
-            transform: scale(1.03);
-            box-shadow: 0 10px 25px -5px rgba(56, 189, 248, 0.3);
-        }
-        
-        @media (max-width: 640px) {
-            .section {
-                scroll-margin-top: 80px;
-            }
+        .pulse {
+            animation: pulse 2s infinite;
         }
     </style>
 </head>
-<body>
+<body class="min-h-screen text-white font-sans overflow-x-hidden">
+    <!-- Particle.js Background -->
     <div id="particles-js"></div>
-    <div class="content-wrapper">
-        <!-- Navigation -->
-        <nav class="fixed w-full bg-white bg-opacity-90 shadow-sm z-50">
-            <div class="container mx-auto px-6 py-4 flex justify-between items-center">
-                <div class="text-xl font-bold text-sky-800">XFRMAN</div>
-                <div class="hidden md:flex space-x-8">
-                    <a href="#about" class="nav-link text-gray-700">About Me</a>
-                    <a href="#education" class="nav-link text-gray-700">Education</a>
-                    <a href="#tools" class="nav-link text-gray-700">Tools</a>
-                    <a href="#project" class="nav-link text-gray-700">Project</a>
-                    <a href="#marketplace" class="nav-link text-gray-700">Marketplace</a>
-                    <a href="#testimonial" class="nav-link text-gray-700">Testimonial</a>
-                    <a href="#contact" class="nav-link text-gray-700">Contact</a>
+    
+    <!-- Main Content -->
+    <div class="container mx-auto px-4 py-12 flex flex-col items-center justify-center min-h-screen">
+        <header class="text-center mb-12">
+            <h1 class="text-5xl font-bold mb-4 tracking-tighter">
+                <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">xSpace</span>
+                <span class="text-white">Uploader</span>
+            </h1>
+            <p class="text-gray-300 max-w-md mx-auto">Upload and share your files across the cosmos. Max 100MB per file.</p>
+        </header>
+        
+        <!-- Upload Container -->
+        <div class="upload-container rounded-xl p-8 w-full max-w-2xl relative overflow-hidden transition-all duration-300">
+            <!-- Upload Box -->
+            <div id="uploadBox" class="text-center">
+                <div class="flex justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M7 16a4 4 0 01-.88-7.903A5 5 0 1115.9 6L16 6a5 5 0 011 9.9M15 13l-3-3m0 0l-3 3m3-3v12" />
+                    </svg>
                 </div>
-                <button id="mobile-menu-button" class="md:hidden focus:outline-none">
-                    <i class="fas fa-bars text-gray-700 text-xl"></i>
+                <h2 class="text-2xl font-semibold mb-2">Upload Your File</h2>
+                <p class="text-gray-300 mb-6">Drag & drop files here or click to browse</p>
+                
+                <label for="fileInput" class="file-input-label cursor-pointer inline-flex items-center px-6 py-3 bg-gradient-to-r from-blue-600 to-purple-600 rounded-lg font-medium hover:shadow-lg transition-all duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Select File
+                </label>
+                <input type="file" id="fileInput" class="hidden" />
+                <p class="text-sm text-gray-400 mt-4">Max file size: 100MB</p>
+            </div>
+            
+            <!-- Upload Progress (hidden by default) -->
+            <div id="uploadProgress" class="hidden text-center">
+                <div class="flex justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-blue-400 pulse" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M19 11a7 7 0 01-7 7m0 0a7 7 0 01-7-7m7 7v4m0 0H8m4 0h4m-4-8a3 3 0 01-3-3V5a3 3 0 116 0v6a3 3 0 01-3 3z" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-semibold mb-2">Uploading to the Cosmos...</h2>
+                <div class="w-full bg-gray-700 rounded-full h-2.5 mb-6 mt-4">
+                    <div id="progressBar" class="bg-blue-500 h-2.5 rounded-full" style="width: 0%"></div>
+                </div>
+                <p id="progressText" class="text-sm text-gray-300">0% • 0 MB of 0 MB</p>
+            </div>
+            
+            <!-- Result Box (hidden by default) -->
+            <div id="resultBox" class="hidden text-center">
+                <div class="flex justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-green-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+                    </svg>
+                </div>
+                <h2 class="text-2xl font-semibold mb-2">Upload Complete!</h2>
+                <p class="text-gray-300 mb-6">Your file is now orbiting in space</p>
+                
+                <div class="bg-gray-800 rounded-lg p-4 mb-6">
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-400">File:</span>
+                        <span id="fileName" class="font-medium truncate max-w-xs"></span>
+                    </div>
+                    <div class="flex items-center justify-between mb-2">
+                        <span class="text-gray-400">Size:</span>
+                        <span id="fileSize" class="font-medium"></span>
+                    </div>
+                    <div class="flex items-center justify-between">
+                        <span class="text-gray-400">Type:</span>
+                        <span id="fileType" class="font-medium"></span>
+                    </div>
+                </div>
+                
+                <div class="mb-6">
+                    <label class="block text-gray-300 text-sm mb-2">Shareable Link</label>
+                    <div class="flex">
+                        <input id="fileUrl" type="text" readonly class="flex-grow px-4 py-2 bg-gray-800 rounded-l-lg focus:outline-none focus:ring-2 focus:ring-blue-500 truncate">
+                        <button id="copyBtn" class="bg-blue-600 hover:bg-blue-700 px-4 py-2 rounded-r-lg transition-colors duration-200">
+                            Copy
+                        </button>
+                    </div>
+                </div>
+                
+                <button id="newUploadBtn" class="inline-flex items-center px-6 py-3 bg-gray-700 hover:bg-gray-600 rounded-lg font-medium transition-colors duration-200">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5 mr-2" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 6v6m0 0v6m0-6h6m-6 0H6" />
+                    </svg>
+                    Upload Another File
                 </button>
             </div>
             
-            <!-- Mobile Menu -->
-            <div id="mobile-menu" class="hidden md:hidden bg-white py-4 px-6 shadow-lg">
-                <div class="flex flex-col space-y-4">
-                    <a href="#about" class="text-gray-700 hover:text-sky-600">About Me</a>
-                    <a href="#education" class="text-gray-700 hover:text-sky-600">Education</a>
-                    <a href="#tools" class="text-gray-700 hover:text-sky-600">Tools</a>
-                    <a href="#project" class="text-gray-700 hover:text-sky-600">Project</a>
-                    <a href="#marketplace" class="text-gray-700 hover:text-sky-600">Marketplace</a>
-                    <a href="#testimonial" class="text-gray-700 hover:text-sky-600">Testimonial</a>
-                    <a href="#contact" class="text-gray-700 hover:text-sky-600">Contact</a>
+            <!-- Error Box (hidden by default) -->
+            <div id="errorBox" class="hidden text-center">
+                <div class="flex justify-center mb-6">
+                    <svg xmlns="http://www.w3.org/2000/svg" class="h-16 w-16 text-red-400" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+                    </svg>
                 </div>
-            </div>
-        </nav>
-
-        <!-- Hero Section -->
-        <section class="hero min-h-screen flex items-center justify-center px-6 py-24">
-            <div class="container mx-auto text-center">
-                <h1 class="text-5xl md:text-7xl font-bold text-sky-800 mb-6 animate-on-scroll">XFRMAN</h1>
-                <p class="text-xl md:text-2xl text-gray-600 max-w-3xl mx-auto animate-on-scroll" style="transition-delay: 0.2s">
-                    This is the official portal of Project AstroTech and Owner Information, Providing the latest information about this WhatsApp Bot Assistance.
-                </p>
-                <div class="mt-12 animate-on-scroll" style="transition-delay: 0.4s">
-                    <a href="#about" class="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 px-8 rounded-full transition duration-300 transform hover:scale-105 glow-effect">
-                        Explore More
-                    </a>
-                </div>
-            </div>
-        </section>
-
-        <!-- About Me Section -->
-        <section id="about" class="section container mx-auto px-6 py-20">
-            <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">About Me</h2>
-            
-            <div class="flex flex-col lg:flex-row gap-8">
-                <div class="lg:w-1/2">
-                    <div class="card rounded-xl shadow-md p-8 h-full animate-on-scroll">
-                        <div class="flex items-center mb-6">
-                            <div class="w-20 h-20 rounded-full bg-sky-100 flex items-center justify-center text-sky-800 text-2xl font-bold mr-4">
-                                <i class="fas fa-user"></i>
-                            </div>
-                            <div>
-                                <h3 class="text-2xl font-bold text-gray-800">Ferdi Firmansyah</h3>
-                                <p class="text-gray-600">WhatsApp Bot Owner - Not Dev</p>
-                            </div>
-                        </div>
-                        
-                        <div class="space-y-4">
-                            <div class="flex items-center">
-                                <i class="fas fa-map-marker-alt text-sky-600 w-6 mr-4 text-center"></i>
-                                <span>Pondok Indah Raya, Banjarmasin, South Kalimantan</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-birthday-cake text-sky-600 w-6 mr-4 text-center"></i>
-                                <span>May 15, 2005
-                                (20 years in 2025)</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-heart text-sky-600 w-6 mr-4 text-center"></i>
-                                <span>Hobbies: Copy Paste Code and sleeping</span>
-                            </div>
-                            <div class="flex items-center">
-                                <i class="fas fa-star text-sky-600 w-6 mr-4 text-center"></i>
-                                <span>Skills: Just sleep</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <h2 class="text-2xl font-semibold mb-2" id="errorTitle">Upload Failed</h2>
+                <p class="text-gray-300 mb-6" id="errorMessage">An unknown error occurred during upload.</p>
                 
-                <div class="lg:w-1/2">
-                    <div class="card rounded-xl shadow-md p-8 h-full animate-on-scroll" style="transition-delay: 0.2s">
-                        <h3 class="text-xl font-bold mb-4 text-gray-800">Deskripsi Singkat</h3>
-                        <p class="text-gray-600 mb-6">
-                            WhatsApp Bot Developer since 2020, not a Professional Developer, just a Hobbyist.
-                        </p>
-                        <p class="text-gray-600">
-                            I started developing WhatsApp bots as a hobby and keep developing them with new features. AstroTech is my main project which is constantly updated with the latest technology.
-                        </p>
-                        
-                        <div class="mt-8 grid grid-cols-2 gap-4">
-                            <div class="bg-sky-50 p-4 rounded-lg">
-                                <div class="text-sky-600 text-2xl mb-2">
-                                    <i class="fas fa-calendar-alt"></i>
-                                </div>
-                                <h4 class="font-bold">Since 2020</h4>
-                                <p class="text-sm text-gray-600">Developing bot</p>
-                            </div>
-                            <div class="bg-sky-50 p-4 rounded-lg">
-                                <div class="text-sky-600 text-2xl mb-2">
-                                    <i class="fas fa-robot"></i>
-                                </div>
-                                <h4 class="font-bold">AstroTech</h4>
-                                <p class="text-sm text-gray-600">Main Projects</p>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+                <button id="tryAgainBtn" class="inline-flex items-center px-6 py-3 bg-red-600 hover:bg-red-700 rounded-lg font-medium transition-colors duration-200">
+                    Try Again
+                </button>
             </div>
-        </section>
-
-        <!-- Education Section -->
-        <section id="education" class="section bg-sky-50 py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Educational Information</h2>
-                
-                <div class="max-w-3xl mx-auto">
-    <div class="card rounded-xl shadow-md p-8 animate-on-scroll">
-        <div class="timeline-item">
-            <h3 class="text-xl font-bold mb-2">Kindergarten</h3>
-            <p class="text-gray-600">2010 – 2011</p>
         </div>
         
-        <div class="timeline-item">
-            <h3 class="text-xl font-bold mb-2">Elementary School</h3>
-            <p class="text-gray-600">2011 – 2017</p>
-        </div>
-        
-        <div class="timeline-item">
-            <h3 class="text-xl font-bold mb-2">Junior High School</h3>
-            <p class="text-gray-600">2017 – 2020</p>
-        </div>
-        
-        <div class="timeline-item">
-            <h3 class="text-xl font-bold mb-2">Senior High School</h3>
-            <p class="text-gray-600">2020 – 2023</p>
-        </div>
-        
-        <div class="timeline-item">
-            <h3 class="text-xl font-bold mb-2">Prospective University Student</h3>
-            <p class="text-gray-600">University of Lambung Mangkurat (2025)</p>
-        </div>
-    </div>
-</div>
-
-        <!-- Tools Section -->
-        <section id="tools" class="section container mx-auto px-6 py-20">
-            <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Tools or Devices</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-code text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Tools</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>VSCode</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>WebStorm</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll" style="transition-delay: 0.1s">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-cubes text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Packages</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Node.js</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>NPM</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>YARN</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>NVM</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll" style="transition-delay: 0.2s">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-project-diagram text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Framework</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Socket.io</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Mongoose</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Express.js</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-code-branch text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Development</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Git</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>GitHub</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>GitLab</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>ESLint</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Nodemon</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll" style="transition-delay: 0.1s">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-database text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Database</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>MongoDB</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>DBeaver</span>
-                        </li>
-                    </ul>
-                </div>
-                
-                <div class="card rounded-xl shadow-md p-6 animate-on-scroll" style="transition-delay: 0.2s">
-                    <div class="flex items-center mb-4">
-                        <div class="bg-sky-100 p-3 rounded-full mr-4">
-                            <i class="fas fa-server text-sky-600"></i>
-                        </div>
-                        <h3 class="text-lg font-bold">Deployment</h3>
-                    </div>
-                    <ul class="space-y-2">
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Vercel</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Render</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Railway</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Heroku</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Docker</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>VPS</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Pterodactyl</span>
-                        </li>
-                        <li class="flex items-center">
-                            <i class="fas fa-check text-sky-600 mr-2 text-sm"></i>
-                            <span>Replit</span>
-                        </li>
-                    </ul>
-                </div>
-            </div>
-        </section>
-
-        <!-- Project Section -->
-        <section id="project" class="section bg-sky-50 py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Informasi Projek</h2>
-                
-                <div class="flex flex-col lg:flex-row gap-8">
-                    <div class="lg:w-1/2">
-                        <div class="card rounded-xl shadow-md p-8 h-full animate-on-scroll">
-                            <div class="flex items-center mb-6">
-                                <div class="bg-sky-100 p-3 rounded-full mr-4">
-                                    <i class="fas fa-robot text-sky-600 text-2xl"></i>
-                                </div>
-                                <h3 class="text-2xl font-bold text-gray-800">AstroTech</h3>
-                            </div>
-                            
-                            <p class="text-gray-600 mb-6">
-                                A WhatsApp Messenger Robot, Can Manage Online Needs Only Through WhatsApp.
-                            </p>
-                            
-                            <div class="mb-6">
-                                <h4 class="font-bold text-lg mb-3">Joined Since</h4>
-                                <p class="text-gray-600">2020 – 2025</p>
-                            </div>
-                            
-                            <div>
-                                <h4 class="font-bold text-lg mb-3">Key Features</h4>
-                                <ul class="space-y-2">
-                                    <li class="feature-item">Anti link</li>
-                                    <li class="feature-item">Antitasw</li>
-                                    <li class="feature-item">Downloader Media</li>
-                                    <li class="feature-item">Search engine</li>
-                                    <li class="feature-item">Maker Sticker</li>
-                                    <li class="feature-item">Audio YouTube</li>
-                                    <li class="feature-item">Stalker Media Sosial</li>
-                                    <li class="feature-item">Rpg Games</li>
-                                    <li class="feature-item">Games tebakan</li>
-                                    <li class="feature-item">Jaga Grup</li>
-                                    <li class="feature-item">Werewolf games</li>
-                                    <li class="feature-item">ChatGpt</li>
-                                    <li class="feature-item">Exclusive Feature</li>
-                                </ul>
-                            </div>
-                        </div>
-                    </div>
-                    
-                    <div class="lg:w-1/2">
-                        <div class="card rounded-xl shadow-md p-8 h-full animate-on-scroll" style="transition-delay: 0.2s">
-                            <h3 class="text-xl font-bold mb-6 text-gray-800">Demo Fitur</h3>
-                            
-                            <div class="space-y-6">
-                                <div class="flex items-start">
-                                    <div class="bg-sky-100 p-2 rounded-full mr-4 mt-1">
-                                        <i class="fas fa-download text-sky-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Media Downloader</h4>
-                                        <p class="text-gray-600">Download berbagai media dari platform populer langsung melalui WhatsApp.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start">
-                                    <div class="bg-sky-100 p-2 rounded-full mr-4 mt-1">
-                                        <i class="fas fa-search text-sky-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Search Engine</h4>
-                                        <p class="text-gray-600">Mencari informasi dari berbagai sumber tanpa perlu keluar dari WhatsApp.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start">
-                                    <div class="bg-sky-100 p-2 rounded-full mr-4 mt-1">
-                                        <i class="fas fa-gamepad text-sky-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Interactive Games</h4>
-                                        <p class="text-gray-600">Berbagai permainan seru untuk dimainkan bersama teman di grup WhatsApp.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start">
-                                    <div class="bg-sky-100 p-2 rounded-full mr-4 mt-1">
-                                        <i class="fas fa-shield-alt text-sky-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">Group Protection</h4>
-                                        <p class="text-gray-600">Fitur keamanan untuk melindungi grup dari spam dan konten tidak diinginkan.</p>
-                                    </div>
-                                </div>
-                                
-                                <div class="flex items-start">
-                                    <div class="bg-sky-100 p-2 rounded-full mr-4 mt-1">
-                                        <i class="fas fa-brain text-sky-600"></i>
-                                    </div>
-                                    <div>
-                                        <h4 class="font-bold">AI Features</h4>
-                                        <p class="text-gray-600">Fitur cerdas berbasis AI termasuk ChatGPT untuk berbagai kebutuhan.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Marketplace Section -->
-        <section id="marketplace" class="section container mx-auto px-6 py-20">
-            <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Informasi Digital Marketplace</h2>
-            
-            <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-                <div class="animate-on-scroll">
-                    <div class="card rounded-xl shadow-md p-6 h-full price-card">
-                        <div class="bg-sky-100 p-4 rounded-lg mb-4 text-center">
-                            <h3 class="text-xl font-bold text-sky-800">SewaBot</h3>
-                        </div>
-                        <ul class="space-y-3">
-                            <li class="flex justify-between">
-                                <span>7 hari</span>
-                                <span class="font-bold">Rp3.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>15 hari</span>
-                                <span class="font-bold">Rp5.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>30 hari</span>
-                                <span class="font-bold">Rp10.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>75 hari</span>
-                                <span class="font-bold">Rp15.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>100 hari</span>
-                                <span class="font-bold">Rp20.000</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="animate-on-scroll" style="transition-delay: 0.1s">
-                    <div class="card rounded-xl shadow-md p-6 h-full price-card">
-                        <div class="bg-sky-100 p-4 rounded-lg mb-4 text-center">
-                            <h3 class="text-xl font-bold text-sky-800">Premium User</h3>
-                        </div>
-                        <ul class="space-y-3">
-                            <li class="flex justify-between">
-                                <span>10 hari</span>
-                                <span class="font-bold">Rp2.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>30 hari</span>
-                                <span class="font-bold">Rp5.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>75 hari</span>
-                                <span class="font-bold">Rp8.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>100 hari</span>
-                                <span class="font-bold">Rp12.000</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="animate-on-scroll" style="transition-delay: 0.2s">
-                    <div class="card rounded-xl shadow-md p-6 h-full price-card">
-                        <div class="bg-sky-100 p-4 rounded-lg mb-4 text-center">
-                            <h3 class="text-xl font-bold text-sky-800">Source Code</h3>
-                        </div>
-                        <ul class="space-y-3">
-                            <li class="flex justify-between">
-                                <span>Free Update 1 bulan</span>
-                                <span class="font-bold">Rp20.000</span>
-                            </li>
-                            <li class="flex justify-between">
-                                <span>Free Update Selamanya</span>
-                                <span class="font-bold">Rp35.000</span>
-                            </li>
-                        </ul>
-                    </div>
-                </div>
-                
-                <div class="animate-on-scroll md:col-span-2 lg:col-span-3">
-                    <div class="card rounded-xl shadow-md p-6 price-card">
-                        <div class="bg-sky-100 p-4 rounded-lg mb-4 text-center">
-                            <h3 class="text-xl font-bold text-sky-800">Panel pterodactyl</h3>
-                        </div>
-                        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
-                            <div class="text-center">
-                                <div class="font-bold">1GB</div>
-                                <div class="text-sky-600 font-bold">RP 2.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">2GB</div>
-                                <div class="text-sky-600 font-bold">RP 3.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">3GB</div>
-                                <div class="text-sky-600 font-bold">RP 4.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">4GB</div>
-                                <div class="text-sky-600 font-bold">RP 5.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">5GB</div>
-                                <div class="text-sky-600 font-bold">RP 7.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">6GB</div>
-                                <div class="text-sky-600 font-bold">RP 8.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">7GB</div>
-                                <div class="text-sky-600 font-bold">RP 9.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">8GB</div>
-                                <div class="text-sky-600 font-bold">RP 10.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">9GB</div>
-                                <div class="text-sky-600 font-bold">RP 12.000</div>
-                            </div>
-                            <div class="text-center">
-                                <div class="font-bold">UNLIMITED</div>
-                                <div class="text-sky-600 font-bold">RP 15.000</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-        <!-- Testimonial Section -->
-        <section id="testimonial" class="section bg-sky-50 py-20">
-            <div class="container mx-auto px-6">
-                <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Informasi Testimoni</h2>
-                
-                <div class="max-w-2xl mx-auto text-center animate-on-scroll">
-                    <div class="card rounded-xl shadow-md p-8">
-                        <div class="text-5xl mb-6 text-sky-600">
-                            <i class="fas fa-comment-dots"></i>
-                        </div>
-                        <p class="text-gray-600 mb-6">
-                            Butuh Testimoni? Lihat pengalaman pengguna AstroTech di channel WhatsApp kami.
-                        </p>
-                        <a href="https://whatsapp.com/channel/0029VaVguZr5q08f0z5C8g1u" target="_blank" class="inline-block bg-sky-600 hover:bg-sky-700 text-white font-medium py-3 px-6 rounded-full transition duration-300 glow-effect">
-                            <i class="fab fa-whatsapp mr-2"></i> Klik link berikut
-                        </a>
-                    </div>
-                </div>
-            </div>
-        </section>
-
-<!-- Contact Section -->
-<section id="contact" class="section container mx-auto px-6 py-20">
-    <h2 class="text-3xl font-bold mb-12 text-center text-sky-800">Informasi Kontak</h2>
-
-    <div class="max-w-3xl mx-auto">
-        <div class="card rounded-xl shadow-md p-8 animate-on-scroll">
-            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fab fa-whatsapp text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">Owner</h3>
-                        <a href="https://wa.me/19419318284" target="_blank" class="text-gray-600 hover:text-sky-600 hover:underline">Chat Owner</a>
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fab fa-whatsapp text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">Bot</h3>
-                        <a href="https://wa.me/62857059457516" target="_blank" class="text-gray-600 hover:text-sky-600 hover:underline">Chat Bot</a>
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fab fa-whatsapp text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">Grup</h3>
-                        <a href="https://chat.whatsapp.com/JcSTawAlkyDHanptImERz3" target="_blank" class="text-gray-600 hover:text-sky-600 hover:underline">Join Grup</a>
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fas fa-broadcast-tower text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">Channel</h3>
-                        <a href="https://chat.whatsapp.com/JcSTawAlkyDHanptImERz3" target="_blank" class="text-gray-600 hover:text-sky-600 hover:underline">Lihat Channel</a>
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fas fa-envelope text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">Email</h3>
-                        <a href="mailto:xfrmannjs15@gmail.com" class="text-gray-600 hover:text-sky-600 hover:underline">Kirim Email</a>
-                    </div>
-                </div>
-
-                <div class="flex items-center">
-                    <div class="bg-sky-100 p-3 rounded-full mr-4">
-                        <i class="fab fa-github text-sky-600 text-xl"></i>
-                    </div>
-                    <div>
-                        <h3 class="font-bold">GitHub</h3>
-                        <a href="https://github.com" target="_blank" class="text-gray-600 hover:text-sky-600 hover:underline">xfrmannv</a>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</section>
-
-        <!-- Footer -->
-        <footer class="bg-sky-800 text-white py-12">
-            <div class="container mx-auto px-6">
-                <div class="flex flex-col md:flex-row justify-between items-center">
-                    <div class="mb-6 md:mb-0">
-                        <div class="text-xl font-bold mb-2">XFRMAN</div>
-                        <p>"Seamless Interactions"</p>
-                    </div>
-                    <div class="flex space-x-6">
-                        <a href="https://wa.me/19419318284" target="_blank" class="hover:text-sky-200">
-                            <i class="fab fa-whatsapp text-xl"></i>
-                        </a>
-                        <a href="mailto:xfrmannjs@gmail.com" class="hover:text-sky-200">
-                            <i class="fas fa-envelope text-xl"></i>
-                        </a>
-                        <a href="#" target="_blank" class="hover:text-sky-200">
-                            <i class="fab fa-github text-xl"></i>
-                        </a>
-                    </div>
-                </div>
-                <div class="border-t border-sky-700 mt-8 pt-8 text-center">
-                    <p>© 2025 XFRMAN. All rights reserved.</p>
-                </div>
-            </div>
+        <footer class="mt-16 text-center text-gray-400 text-sm">
+            <p>© 2023 xSpaceUploader • All files are deleted after 30 days</p>
         </footer>
     </div>
 
     <script>
-        // Mobile menu toggle
-        const mobileMenuButton = document.getElementById('mobile-menu-button');
-        const mobileMenu = document.getElementById('mobile-menu');
-        
-        mobileMenuButton.addEventListener('click', () => {
-            mobileMenu.classList.toggle('hidden');
-        });
-        
-        // Close mobile menu when clicking on a link
-        document.querySelectorAll('#mobile-menu a').forEach(link => {
-            link.addEventListener('click', () => {
-                mobileMenu.classList.add('hidden');
-            });
-        });
-        
-        // Scroll animation
-        const animateElements = document.querySelectorAll('.animate-on-scroll');
-        
-        const animateOnScroll = () => {
-            animateElements.forEach(element => {
-                const elementTop = element.getBoundingClientRect().top;
-                const windowHeight = window.innerHeight;
-                
-                if (elementTop < windowHeight - 100) {
-                    element.classList.add('visible');
-                }
-            });
-        };
-        
-        // Run once on load
-        animateOnScroll();
-        
-        // Run on scroll
-        window.addEventListener('scroll', animateOnScroll);
-        
         // Initialize particles.js
-        particlesJS('particles-js', {
-            "particles": {
-                "number": {
-                    "value": 80,
-                    "density": {
-                        "enable": true,
-                        "value_area": 800
-                    }
-                },
-                "color": {
-                    "value": "#38bdf8"
-                },
-                "shape": {
-                    "type": "circle",
-                    "stroke": {
-                        "width": 0,
-                        "color": "#000000"
-                    }
-                },
-                "opacity": {
-                    "value": 0.3,
-                    "random": false
-                },
-                "size": {
-                    "value": 3,
-                    "random": true
-                },
-                "line_linked": {
-                    "enable": true,
-                    "distance": 150,
-                    "color": "#38bdf8",
-                    "opacity": 0.2,
-                    "width": 1
-                },
-                "move": {
-                    "enable": true,
-                    "speed": 2,
-                    "direction": "none",
-                    "random": false,
-                    "straight": false,
-                    "out_mode": "out"
-                }
-            },
-            "interactivity": {
-                "detect_on": "canvas",
-                "events": {
-                    "onhover": {
-                        "enable": true,
-                        "mode": "grab"
-                    },
-                    "onclick": {
-                        "enable": true,
-                        "mode": "push"
-                    },
-                    "resize": true
-                },
-                "modes": {
-                    "grab": {
-                        "distance": 140,
-                        "line_linked": {
-                            "opacity": 1
+        document.addEventListener('DOMContentLoaded', function() {
+            particlesJS('particles-js', {
+                "particles": {
+                    "number": {
+                        "value": 80,
+                        "density": {
+                            "enable": true,
+                            "value_area": 800
                         }
                     },
-                    "push": {
-                        "particles_nb": 4
+                    "color": {
+                        "value": "#3b82f6"
+                    },
+                    "shape": {
+                        "type": "circle",
+                        "stroke": {
+                            "width": 0,
+                            "color": "#000000"
+                        },
+                        "polygon": {
+                            "nb_sides": 5
+                        }
+                    },
+                    "opacity": {
+                        "value": 0.5,
+                        "random": false,
+                        "anim": {
+                            "enable": false,
+                            "speed": 1,
+                            "opacity_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "size": {
+                        "value": 3,
+                        "random": true,
+                        "anim": {
+                            "enable": false,
+                            "speed": 40,
+                            "size_min": 0.1,
+                            "sync": false
+                        }
+                    },
+                    "line_linked": {
+                        "enable": true,
+                        "distance": 150,
+                        "color": "#3b82f6",
+                        "opacity": 0.2,
+                        "width": 1
+                    },
+                    "move": {
+                        "enable": true,
+                        "speed": 2,
+                        "direction": "none",
+                        "random": false,
+                        "straight": false,
+                        "out_mode": "out",
+                        "bounce": false,
+                        "attract": {
+                            "enable": false,
+                            "rotateX": 600,
+                            "rotateY": 1200
+                        }
                     }
+                },
+                "interactivity": {
+                    "detect_on": "canvas",
+                    "events": {
+                        "onhover": {
+                            "enable": true,
+                            "mode": "grab"
+                        },
+                        "onclick": {
+                            "enable": true,
+                            "mode": "push"
+                        },
+                        "resize": true
+                    },
+                    "modes": {
+                        "grab": {
+                            "distance": 140,
+                            "line_linked": {
+                                "opacity": 1
+                            }
+                        },
+                        "bubble": {
+                            "distance": 400,
+                            "size": 40,
+                            "duration": 2,
+                            "opacity": 8,
+                            "speed": 3
+                        },
+                        "repulse": {
+                            "distance": 200,
+                            "duration": 0.4
+                        },
+                        "push": {
+                            "particles_nb": 4
+                        },
+                        "remove": {
+                            "particles_nb": 2
+                        }
+                    }
+                },
+                "retina_detect": true
+            });
+            
+            // File upload functionality
+            const fileInput = document.getElementById('fileInput');
+            const uploadBox = document.getElementById('uploadBox');
+            const uploadProgress = document.getElementById('uploadProgress');
+            const resultBox = document.getElementById('resultBox');
+            const errorBox = document.getElementById('errorBox');
+            const progressBar = document.getElementById('progressBar');
+            const progressText = document.getElementById('progressText');
+            const fileName = document.getElementById('fileName');
+            const fileSize = document.getElementById('fileSize');
+            const fileType = document.getElementById('fileType');
+            const fileUrl = document.getElementById('fileUrl');
+            const copyBtn = document.getElementById('copyBtn');
+            const newUploadBtn = document.getElementById('newUploadBtn');
+            const tryAgainBtn = document.getElementById('tryAgainBtn');
+            
+            // Drag and drop functionality
+            const uploadContainer = document.querySelector('.upload-container');
+            
+            uploadContainer.addEventListener('dragover', (e) => {
+                e.preventDefault();
+                uploadContainer.classList.add('glow');
+            });
+            
+            uploadContainer.addEventListener('dragleave', () => {
+                uploadContainer.classList.remove('glow');
+            });
+            
+            uploadContainer.addEventListener('drop', (e) => {
+                e.preventDefault();
+                uploadContainer.classList.remove('glow');
+                
+                if (e.dataTransfer.files.length) {
+                    fileInput.files = e.dataTransfer.files;
+                    handleFileUpload();
                 }
-            },
-            "retina_detect": true
+            });
+            
+            fileInput.addEventListener('change', handleFileUpload);
+            
+            function handleFileUpload() {
+                const file = fileInput.files[0];
+                
+                if (!file) return;
+                
+                // Check file size (100MB max)
+                const maxSize = 100 * 1024 * 1024; // 100MB in bytes
+                if (file.size > maxSize) {
+                    showError('File Too Large', 'The selected file exceeds the 100MB limit. Please choose a smaller file.');
+                    return;
+                }
+                
+                // Show upload progress
+                uploadBox.classList.add('hidden');
+                uploadProgress.classList.remove('hidden');
+                
+                // Simulate upload progress (in a real app, this would be replaced with actual upload code)
+                let progress = 0;
+                const totalSizeMB = (file.size / (1024 * 1024)).toFixed(2);
+                
+                const interval = setInterval(() => {
+                    progress += Math.random() * 10;
+                    if (progress > 100) progress = 100;
+                    
+                    progressBar.style.width = `${progress}%`;
+                    
+                    const uploadedMB = (progress / 100 * file.size / (1024 * 1024)).toFixed(2);
+                    progressText.textContent = `${Math.round(progress)}% • ${uploadedMB} MB of ${totalSizeMB} MB`;
+                    
+                    if (progress === 100) {
+                        clearInterval(interval);
+                        
+                        // In a real app, you would wait for the actual upload to complete
+                        setTimeout(() => showUploadResult(file), 500);
+                    }
+                }, 200);
+            }
+            
+            function showUploadResult(file) {
+                uploadProgress.classList.add('hidden');
+                
+                // Generate a random URL using your domain
+                const randomId = Math.random().toString(36).substring(2, 10);
+                const generatedUrl = `https://xspace.vercel.app/${randomId}`;
+                
+                // Display file info
+                fileName.textContent = file.name;
+                fileSize.textContent = formatFileSize(file.size);
+                fileType.textContent = file.type || 'Unknown';
+                fileUrl.value = generatedUrl;
+                
+                resultBox.classList.remove('hidden');
+            }
+            
+            function showError(title, message) {
+                uploadBox.classList.add('hidden');
+                uploadProgress.classList.add('hidden');
+                resultBox.classList.add('hidden');
+                
+                document.getElementById('errorTitle').textContent = title;
+                document.getElementById('errorMessage').textContent = message;
+                
+                errorBox.classList.remove('hidden');
+            }
+            
+            function formatFileSize(bytes) {
+                if (bytes < 1024) return bytes + ' bytes';
+                else if (bytes < 1024 * 1024) return (bytes / 1024).toFixed(2) + ' KB';
+                else if (bytes < 1024 * 1024 * 1024) return (bytes / (1024 * 1024)).toFixed(2) + ' MB';
+                else return (bytes / (1024 * 1024 * 1024)).toFixed(2) + ' GB';
+            }
+            
+            // Button event listeners
+            copyBtn.addEventListener('click', () => {
+                fileUrl.select();
+                document.execCommand('copy');
+                
+                const originalText = copyBtn.textContent;
+                copyBtn.textContent = 'Copied!';
+                copyBtn.classList.add('bg-green-600');
+                copyBtn.classList.remove('bg-blue-600');
+                
+                setTimeout(() => {
+                    copyBtn.textContent = originalText;
+                    copyBtn.classList.remove('bg-green-600');
+                    copyBtn.classList.add('bg-blue-600');
+                }, 2000);
+            });
+            
+            newUploadBtn.addEventListener('click', () => {
+                resultBox.classList.add('hidden');
+                uploadBox.classList.remove('hidden');
+                fileInput.value = '';
+            });
+            
+            tryAgainBtn.addEventListener('click', () => {
+                errorBox.classList.add('hidden');
+                uploadBox.classList.remove('hidden');
+                fileInput.value = '';
+            });
         });
     </script>
-<p style="border-radius: 8px; text-align: center; font-size: 12px; color: #fff; margin-top: 16px;position: fixed; left: 8px; bottom: 8px; z-index: 10; background: rgba(0, 0, 0, 0.8); padding: 4px 8px;">Supposed by <img src="https://xfrmann.vercel.app/logo.svg" alt="DeepSite Logo" style="width: 16px; height: 16px; vertical-align: middle;display:inline-block;margin-right:3px;filter:brightness(0) invert(1);"><a href="https://xfrmann.vercel.app" style="color: #fff;text-decoration: underline;" target="_blank" >AstroTech</a> - 🔮 <a href="https://xfrmann.vercel.app?remix=XmanDfk/keduaa" style="color: #fff;text-decoration: underline;" target="_blank" >VVIP</a></p></body>
+</body>
 </html>
