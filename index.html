@@ -1,0 +1,297 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ferdi Frmnsyh - Portfolio</title>
+    <link rel="icon" type="image/x-icon" href="/static/favicon.ico">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://unpkg.com/feather-icons"></script>
+    <script src="https://cdn.jsdelivr.net/npm/feather-icons/dist/feather.min.js"></script>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        undefined: {
+                            500: '#a855f7',
+                            600: '#9333ea',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #0f0f15;
+            color: #f0f0f0;
+            overflow-x: hidden;
+        }
+        
+        .neon-text {
+            text-shadow: 0 0 5px rgba(168, 85, 247, 0.5),
+                         0 0 10px rgba(168, 85, 247, 0.3),
+                         0 0 15px rgba(168, 85, 247, 0.2);
+        }
+        
+        .neon-border {
+            box-shadow: 0 0 10px rgba(168, 85, 247, 0.5),
+                        0 0 20px rgba(168, 85, 247, 0.3);
+        }
+        
+        .glow-hover:hover {
+            box-shadow: 0 0 15px rgba(168, 85, 247, 0.7),
+                        0 0 30px rgba(168, 85, 247, 0.4);
+            transition: all 0.3s ease;
+        }
+        
+        .meteor {
+            position: absolute;
+            width: 2px;
+            height: 2px;
+            background: #a855f7;
+            border-radius: 50%;
+            box-shadow: 0 0 10px 2px rgba(168, 85, 247, 0.7);
+            animation: meteor-fall linear infinite;
+        }
+        
+        @keyframes meteor-fall {
+            from {
+                transform: translateY(-100px) translateX(0);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            to {
+                transform: translateY(100vh) translateX(100px);
+                opacity: 0;
+            }
+        }
+        
+        .timeline-item::before {
+            content: '';
+            position: absolute;
+            left: -10px;
+            top: 5px;
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background: #a855f7;
+            box-shadow: 0 0 5px rgba(168, 85, 247, 0.7);
+        }
+        
+        .timeline-item:not(:last-child)::after {
+            content: '';
+            position: absolute;
+            left: -5px;
+            top: 20px;
+            width: 2px;
+            height: calc(100% + 10px);
+            background: linear-gradient(to bottom, rgba(168, 85, 247, 0.5), transparent);
+        }
+        
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .fade-in.appear {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="relative">
+    <!-- Animated Background -->
+    <div id="meteor-container" class="fixed inset-0 pointer-events-none z-0"></div>
+    
+    <!-- Header -->
+    <header class="container mx-auto px-4 py-8 flex flex-col md:flex-row justify-between items-center relative z-10">
+        <div class="mb-6 md:mb-0">
+            <h1 class="text-3xl md:text-4xl font-bold neon-text">Ferdi Frmnsyh</h1>
+        </div>
+        <div class="relative">
+            <img src="https://files.catbox.moe/bzl9y8.jpeg" alt="Logo" class="w-24 h-24 rounded-full neon-border object-cover">
+        </div>
+    </header>
+    
+    <main class="container mx-auto px-4 py-8 relative z-10">
+        <!-- About Me Section -->
+        <section class="mb-16 fade-in">
+            <h2 class="text-2xl font-bold mb-6 neon-text flex items-center">
+                <i data-feather="user" class="mr-2"></i> About Me
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <p class="mb-4 text-gray-300">My journey is shaped by curiosity and the desire to create meaningful experiences through design and technology. I constantly explore new ideas and push the boundaries of possibility.</p>
+                    <div class="space-y-2">
+                        <p><span class="text-undefined-500">Birthdate:</span> 15 May 2005</p>
+                        <p><span class="text-undefined-500">City:</span> Banjarmasin, South Kalimantan</p>
+                        <p><span class="text-undefined-500">Education:</span> Diploma 3 Taxation, Lambung Mangkurat University, class of 2025</p>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-3">Hobbies</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Watching thriller movies</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Swimming</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Basketball</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Badminton</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Copy-pasting code</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Sleeping</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Eating</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full text-sm glow-hover">Watching YouTube :v</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Education Timeline -->
+        <section class="mb-16 fade-in">
+            <h2 class="text-2xl font-bold mb-6 neon-text flex items-center">
+                <i data-feather="book" class="mr-2"></i> Education
+            </h2>
+            <div class="relative pl-8 border-l border-undefined-500/30">
+                <div class="timeline-item mb-8 pl-6 relative">
+                    <h3 class="text-xl font-semibold">Elementary School</h3>
+                    <p class="text-gray-400">SDN ...</p>
+                </div>
+                <div class="timeline-item mb-8 pl-6 relative">
+                    <h3 class="text-xl font-semibold">Junior High School</h3>
+                    <p class="text-gray-400">SMPN ...</p>
+                </div>
+                <div class="timeline-item mb-8 pl-6 relative">
+                    <h3 class="text-xl font-semibold">Senior High School</h3>
+                    <p class="text-gray-400">SMAN ...</p>
+                </div>
+                <div class="timeline-item pl-6 relative">
+                    <h3 class="text-xl font-semibold">University</h3>
+                    <p class="text-gray-400">Diploma 3 Taxation, Lambung Mangkurat University (2025)</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Achievements -->
+        <section class="mb-16 fade-in">
+            <h2 class="text-2xl font-bold mb-6 neon-text flex items-center">
+                <i data-feather="award" class="mr-2"></i> Achievements
+            </h2>
+            <div class="space-y-4">
+                <div class="p-4 bg-undefined-500/10 rounded-lg glow-hover">
+                    <h3 class="font-semibold">Drumband Festival (Regent Cup, District level)</h3>
+                    <p class="text-undefined-500">1st Place (Team Member)</p>
+                </div>
+                <div class="p-4 bg-undefined-500/10 rounded-lg glow-hover">
+                    <h3 class="font-semibold">Drumband Festival (Regent Cup, District level)</h3>
+                    <p class="text-undefined-500">2nd Place (Team Member)</p>
+                </div>
+            </div>
+        </section>
+        
+        <!-- Growth Mindset -->
+        <section class="mb-16 fade-in">
+            <h2 class="text-2xl font-bold mb-6 neon-text flex items-center">
+                <i data-feather="brain" class="mr-2"></i> Growth Mindset
+            </h2>
+            <div class="p-6 bg-undefined-500/10 rounded-lg border border-undefined-500/20">
+                <p class="italic mb-3">"Growth mindset is the belief that abilities and intelligence can be developed through dedication and hard work. This mindset fosters a love for learning and resilience, which are essential for success. People with a growth mindset understand that their talents and abilities can be developed through effort, good teaching and persistence. They don't necessarily think everyone's the same or anyone can be Einstein, but they believe everyone can get smarter if they work at it."</p>
+                <p class="text-right text-undefined-500">- Source: Carol Dweck</p>
+            </div>
+        </section>
+        
+        <!-- IT Skills -->
+        <section class="fade-in">
+            <h2 class="text-2xl font-bold mb-6 neon-text flex items-center">
+                <i data-feather="code" class="mr-2"></i> IT Skills & Tools
+            </h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Programming Languages & Technologies</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">HTML</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">CSS</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">JavaScript</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Node.js</span>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-xl font-semibold mb-4">Development Tools, Platforms & Databases</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Replit</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">GitHub</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">GitLab</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Heroku</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">MongoDB</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Roadmap.sh</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Railway.app</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">Pterodactyl</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">VPS</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">AstraDB</span>
+                        <span class="px-3 py-1 bg-undefined-500/20 rounded-full glow-hover">MySQL</span>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+    
+    <footer class="container mx-auto px-4 py-8 text-center text-gray-500 relative z-10">
+        <p>© 2023 Ferdi Frmnsyh. All rights reserved.</p>
+    </footer>
+    
+    <script>
+        // Create meteors
+        function createMeteors() {
+            const container = document.getElementById('meteor-container');
+            const meteorCount = 15;
+            
+            for (let i = 0; i < meteorCount; i++) {
+                const meteor = document.createElement('div');
+                meteor.classList.add('meteor');
+                
+                // Random position and animation
+                const left = Math.random() * 100;
+                const delay = Math.random() * 10;
+                const duration = 3 + Math.random() * 5;
+                
+                meteor.style.left = `${left}%`;
+                meteor.style.animationDelay = `${delay}s`;
+                meteor.style.animationDuration = `${duration}s`;
+                
+                container.appendChild(meteor);
+            }
+        }
+        
+        // Fade in elements on scroll
+        function handleScrollAnimation() {
+            const fadeElements = document.querySelectorAll('.fade-in');
+            
+            fadeElements.forEach(element => {
+                const elementPosition = element.getBoundingClientRect().top;
+                const screenPosition = window.innerHeight / 1.3;
+                
+                if (elementPosition < screenPosition) {
+                    element.classList.add('appear');
+                }
+            });
+        }
+        
+        // Initialize
+        document.addEventListener('DOMContentLoaded', () => {
+            createMeteors();
+            feather.replace();
+            
+            // Initial check for elements in viewport
+            handleScrollAnimation();
+            
+            // Add scroll event listener
+            window.addEventListener('scroll', handleScrollAnimation);
+        });
+    </script>
+</body>
+</html>
